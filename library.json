@@ -1,0 +1,28 @@
+{
+    "name": "UnixStamp",
+    "version": "0.0.1",
+    "description": "A simple unix timestamp conversion class",
+    "keywords": "unix, conversion, getUnix, getYear, getMonth, getDay, getHour, getMinute, getSecond",
+    "repository":
+    {
+      "type": "git",
+      "url": "https://github.com/chifir/UnixStamp.git"
+    },
+    "authors":
+    [
+      {
+        "name": "Raman Zhukau",
+        "email": "raman.zhukau@gmail.com",
+        "maintainer": true
+      },
+      {
+        "name": "Raman Fedaseyeu",
+        "email": "werediver@gmail.com"
+      }
+    ],
+    "license": "MIT",
+    "homepage": "https://www.helloworld.org/",
+    "dependencies": {},
+    "frameworks": "*",
+    "platforms": "*"
+  }
