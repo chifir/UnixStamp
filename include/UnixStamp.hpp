@@ -44,8 +44,8 @@ public:
     uint8_t getMinute();
     uint8_t getSecond();
 
-    static time_t covertTimeToUnix(tm time, int8_t tz);
-    static tm covertUnixToTime(time_t unix, int8_t tz);
+    static time_t convertTimeToUnix(tm time, int8_t tz);
+    static tm convertUnixToTime(time_t unix, int8_t tz);
 };
 
 #endif
