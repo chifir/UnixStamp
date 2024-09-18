@@ -37,7 +37,7 @@ tm UnixStamp::convertUnixToTime(time_t unix, int8_t tz)
     uint16_t era, dayOfEra, yearOfEra, dayOfYear, yearFromEra, monthFromDayOfYear;
     uint8_t month;
 
-    unix += tz * ONE_HOUR;
+    unix += tz * ONE_HOUR_IN_SEC;
     time.tm_sec = unix % ONE_MINUTE_IN_SEC;
     unix /= ONE_MINUTE_IN_SEC;
     time.tm_min = unix % ONE_HOUR_IN_MIN;

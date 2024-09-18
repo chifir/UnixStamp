@@ -4,6 +4,7 @@
 #include<stdint.h>
 #include<time.h>
 
+#define ONE_HOUR_IN_SEC 3600
 #define ONE_MINUTE_IN_SEC 60
 #define ONE_HOUR_IN_MIN 60
 #define ONE_DAY_IN_HOURS 24
