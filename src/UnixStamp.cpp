@@ -9,7 +9,7 @@ UnixStamp::UnixStamp(time_t unix, int8_t tz)
 {
     this->unix = unix;
     this->tz = tz;
-    this->time = covertUnixToTime(unix, tz);
+    this->time = convertUnixToTime(unix, tz);
 }
 
 UnixStamp::UnixStamp(tm time)
@@ -21,16 +21,16 @@ UnixStamp::UnixStamp(tm time, int8_t tz)
 {
     this->time = time;
     this->tz = tz;
-    this->unix = covertTimeToUnix(time, tz);
+    this->unix = convertTimeToUnix(time, tz);
 }
 
-time_t UnixStamp::covertTimeToUnix(tm time, int8_t tz)
+time_t UnixStamp::convertTimeToUnix(tm time, int8_t tz)
 {
     time.tm_hour += tz;
     return mktime(&time);
 }
 
-tm UnixStamp::covertUnixToTime(time_t unix, int8_t tz)
+tm UnixStamp::convertUnixToTime(time_t unix, int8_t tz)
 {
     struct tm time;
     uint64_t eraStamp;
