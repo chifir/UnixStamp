@@ -1,8 +1,8 @@
 #ifndef UNIXSTAMP_HPP
 #define UNIXSTAMP_HPP
 
-#include<stdint.h>
-#include<time.h>
+#include <stdint.h>
+#include <time.h>
 
 #define ONE_HOUR_IN_SEC 3600
 #define ONE_MINUTE_IN_SEC 60
