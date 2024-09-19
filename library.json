@@ -24,5 +24,11 @@
     "homepage": "https://www.helloworld.org/",
     "dependencies": {},
     "frameworks": "*",
-    "platforms": "*"
+    "platforms": "*",
+    "export": {
+      "exclude": [
+        "platformio.ini",
+        "test/"
+      ]
+    }
   }

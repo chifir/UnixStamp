@@ -1,16 +1,12 @@
-#include "unity.h"
-#include "UnixStamp.hpp"
+#include <unity.h>
+#include <UnixStamp.hpp>
 #include <stdint.h>
 
-void setUp(void) {
-    // do nothing
-}
+void setUp(void) {}
 
-void tearDown(void) {
-    // do nothing
-}
+void tearDown(void) {}
 
-void test_convertion_to_unix() 
+void test_conversion_to_unix()
 {
     tm time;
     time.tm_year = 70;
@@ -22,11 +18,11 @@ void test_convertion_to_unix()
 
     time_t unix = UnixStamp::convertTimeToUnix(time, 0);
     TEST_ASSERT_EQUAL(0, unix);
-
 }
 
-int main(void) {
+int main(void)
+{
     UNITY_BEGIN();
-    RUN_TEST(test_convertion_to_unix);
+    RUN_TEST(test_conversion_to_unix);
     return UNITY_END();
 }
