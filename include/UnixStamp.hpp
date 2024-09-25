@@ -2,12 +2,13 @@
 #define UNIXSTAMP_HPP
 
 #include <stdint.h>
-#include <time.h>
+#include "TimeDataTypes.hpp"
 
 #define ONE_HOUR_IN_SEC 3600
 #define ONE_MINUTE_IN_SEC 60
 #define ONE_HOUR_IN_MIN 60
 #define ONE_DAY_IN_HOURS 24
+#define ONE_DAY_IN_SEC 86400
 
 #define START_YEAR_TIME_H 1900
 
@@ -24,19 +25,18 @@
 class UnixStamp
 {
 private:
-    time_t unix;
-    int8_t tz;
-    tm time;
+    unixstamp unix;
+    civil_time time;
 
 public:
-    time_t getUnix();
+    unixstamp getUnix();
     int8_t getTz();
-    tm getTime();
+    civil_time getTime();
 
-    UnixStamp(time_t unix);
-    UnixStamp(time_t unix, int8_t tz);
-    UnixStamp(tm time);
-    UnixStamp(tm time, int8_t tz);
+    UnixStamp(unixstamp unix);
+    UnixStamp(unixstamp unix, int8_t tz);
+    UnixStamp(civil_time time);
+    UnixStamp(civil_time time, int8_t tz);
 
     uint16_t getYear();
     uint8_t getMonth();
@@ -45,8 +45,8 @@ public:
     uint8_t getMinute();
     uint8_t getSecond();
 
-    static time_t convertTimeToUnix(tm time, int8_t tz);
-    static tm convertUnixToTime(time_t unix, int8_t tz);
+    static unixstamp convertTimeToUnix(civil_time time);
+    static civil_time convertUnixToTime(unixstamp unix, int8_t tz);
 };
 
 #endif
