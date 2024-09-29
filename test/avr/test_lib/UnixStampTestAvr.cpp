@@ -3,17 +3,17 @@
 #include <stdint.h>
 
 #define EXPECETED_CHERNOBYL_TIMESTAMP 514848225
-#define EXPECTED_ERA_END 951868799 
-#define EXPECTED_ERA_START 951868800 
+#define EXPECTED_ERA_END 951868799
+#define EXPECTED_ERA_START 951868800
 #define EXPECTED_EPOCH_LEFT_BORDER 0
 #define EXPECTED_EPOCH_RIGHT_BORDER 4294967295
-
 
 void setUp(void) {}
 
 void tearDown(void) {}
 
-civil_time fillTimeStruct(int16_t year, int8_t mon, int8_t day, int8_t hour, int8_t min, int8_t sec, int8_t tz) {
+civil_time fillTimeStruct(int16_t year, int8_t mon, int8_t day, int8_t hour, int8_t min, int8_t sec, int8_t tz)
+{
     civil_time time;
     time.year = year;
     time.mon = mon;
@@ -25,7 +25,7 @@ civil_time fillTimeStruct(int16_t year, int8_t mon, int8_t day, int8_t hour, int
     return time;
 }
 
-void verify_date_conversion_from_civil_to_epoch(uint32_t expected_unix, int16_t year, int8_t mon, int8_t day, int8_t hour, int8_t min, int8_t sec, int8_t tz) 
+void verify_date_conversion_from_civil_to_epoch(uint32_t expected_unix, int16_t year, int8_t mon, int8_t day, int8_t hour, int8_t min, int8_t sec, int8_t tz)
 {
     civil_time time = fillTimeStruct(year, mon, day, hour, min, sec, tz);
     unixstamp unix = UnixStamp::convertTimeToUnix(time);
@@ -93,7 +93,6 @@ void test_conversion_to_civil_calendar_era_start()
 {
     verify_date_conversion_from_epoch_to_civil(2000, 3, 1, 0, 0, 0, 0, EXPECTED_ERA_START, 0);
 }
-
 
 int main(void)
 {

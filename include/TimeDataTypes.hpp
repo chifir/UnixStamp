@@ -5,7 +5,8 @@
 
 typedef uint32_t unixstamp;
 
-struct civil_time {
+struct civil_time
+{
     uint8_t sec;
     uint8_t min;
     uint8_t hour;
