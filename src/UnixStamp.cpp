@@ -62,8 +62,8 @@ civil_time UnixStamp::convertUnixToTime(unixstamp unix, int8_t tz)
     month = monthFromDayOfYear + (monthFromDayOfYear < 10 ? 3 : -9);
     yearFromEra += (month <= 2);
     
-    time.year = yearFromEra - START_YEAR_TIME_H;
-    time.mon = month - 1;
+    time.year = yearFromEra;
+    time.mon = month;
 
     return time;
 }
