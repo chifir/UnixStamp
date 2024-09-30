@@ -1,57 +1,58 @@
 #include "UnixStamp.hpp"
 
-UnixStamp::UnixStamp(unixstamp unix)
+UnixStamp::UnixStamp(unixstamp inintialUnix)
 {
-    UnixStamp(unix, 0);
+    UnixStamp(inintialUnix, 0);
 }
 
-UnixStamp::UnixStamp(unixstamp unix, int8_t tz)
+UnixStamp::UnixStamp(unixstamp inintialUnix, int8_t inintialTz)
 {
-    this->unix = unix;
-    this->time = convertUnixToTime(unix, tz);
+    this->tz = inintialTz;
+    this->unix = inintialUnix - (inintialTz * ONE_HOUR_IN_SEC);
+    this->time = convertUnixToTime(inintialUnix, inintialTz);
 }
 
-UnixStamp::UnixStamp(civil_time time)
+UnixStamp::UnixStamp(civil_time initialTime)
 {
-    UnixStamp(time, 0);
+    UnixStamp(initialTime, 0);
 }
 
-UnixStamp::UnixStamp(civil_time time, int8_t tz)
+UnixStamp::UnixStamp(civil_time initialTime, int8_t initialTz)
 {
-    this->time = time;
-    this->unix = convertTimeToUnix(time);
+    this->tz = initialTz;
+    this->unix = convertTimeToUnix(initialTime, initialTz);
+    this->time = initialTz != 0 ? convertUnixToTime(this->unix, 0) : initialTime;
 }
 
-unixstamp UnixStamp::convertTimeToUnix(civil_time time)
+unixstamp UnixStamp::convertTimeToUnix(civil_time timeToConvert, int8_t fromTz)
 {
-    uint16_t year = time.year;
-    uint8_t month = time.mon;
+    uint16_t year = timeToConvert.year;
+    uint8_t month = timeToConvert.mon;
     year -= month <= 2;
     uint8_t era = ((year >= 0 ? year : (year - YEARS_IN_ERA - 1)) / YEARS_IN_ERA);
     uint16_t yearOfEra = year % YEARS_IN_ERA;
-    uint16_t dayOfYear = ((DAYS_AFTER_FIRST_MARCH * (month > 2 ? month - 3 : month + 9) + 2) / 5) + time.day - 1;
+    uint16_t dayOfYear = ((DAYS_AFTER_FIRST_MARCH * (month > 2 ? month - 3 : month + 9) + 2) / 5) + timeToConvert.day - 1;
     uint32_t dayOfEra = ((uint32_t)(yearOfEra * 365)) - ((uint32_t)(yearOfEra / 100)) + ((uint32_t)(yearOfEra / 4)) + dayOfYear;
     uint16_t days = (era * DAYS_IN_ERA) + dayOfEra - DAYS_BEFORE_UNIX;
-    uint32_t unix = days * ONE_DAY_IN_SEC + (((uint32_t)(time.hour + time.tz)) * ONE_HOUR_IN_SEC) + ((uint32_t)(time.min * 60)) + time.sec;
+    uint32_t unix = days * ONE_DAY_IN_SEC + (((uint32_t)(timeToConvert.hour - fromTz)) * ONE_HOUR_IN_SEC) + ((uint32_t)(timeToConvert.min * 60)) + timeToConvert.sec;
     return unix;
 }
 
-civil_time UnixStamp::convertUnixToTime(unixstamp unix, int8_t tz)
+civil_time UnixStamp::convertUnixToTime(unixstamp unixToConvert, int8_t fromTz)
 {
     civil_time time;
     uint8_t era, month;
     uint16_t dayOfYear, yearFromEra, monthFromDayOfYear;
     uint32_t eraDays, dayOfEra, yearOfEra;
 
-    unix -= tz * ONE_HOUR_IN_SEC;
-    time.sec = unix % ONE_MINUTE_IN_SEC;
-    unix /= ONE_MINUTE_IN_SEC;
-    time.min = unix % ONE_HOUR_IN_MIN;
-    unix /= ONE_HOUR_IN_MIN;
-    time.hour = unix % ONE_DAY_IN_HOURS;
-    unix /= ONE_DAY_IN_HOURS;
+    time.sec = unixToConvert % ONE_MINUTE_IN_SEC;
+    unixToConvert /= ONE_MINUTE_IN_SEC;
+    time.min = unixToConvert % ONE_HOUR_IN_MIN;
+    unixToConvert /= ONE_HOUR_IN_MIN;
+    time.hour = unixToConvert % ONE_DAY_IN_HOURS - fromTz;
+    unixToConvert /= ONE_DAY_IN_HOURS;
 
-    eraDays = unix + DAYS_BEFORE_UNIX;
+    eraDays = unixToConvert + DAYS_BEFORE_UNIX;
     era = eraDays / DAYS_IN_ERA;
     dayOfEra = eraDays % DAYS_IN_ERA;
     yearOfEra = (dayOfEra - dayOfEra / FOUR_YEAR_CICLE_DAYS + dayOfEra / FIRST_100_YEARS_OF_ERA - dayOfEra / (DAYS_IN_ERA - 1)) / APPROXIMATE_DAYS_IN_YEAR;
@@ -75,7 +76,7 @@ unixstamp UnixStamp::getUnix()
 
 int8_t UnixStamp::getTz()
 {
-    return this->time.tz;
+    return this->tz;
 }
 
 civil_time UnixStamp::getTime()

@@ -13,7 +13,6 @@ struct civil_time
     uint8_t day;
     uint8_t mon;
     uint16_t year;
-    int8_t tz;
 };
 
 #endif
