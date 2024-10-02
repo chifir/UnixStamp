@@ -31,15 +31,17 @@ private:
     int8_t tz;
 
 public:
-    unixstamp getUnix();
-    civil_time getTime();
-    int8_t getTz();
-
     UnixStamp(unixstamp initialUnix);
     UnixStamp(unixstamp initialUnix, int8_t initialTz);
     UnixStamp(civil_time intialTime);
     UnixStamp(civil_time intialTime, int8_t initialTz);
 
+    civil_time getOriginalTime();
+    civil_time getTimeInTz(int8_t tz);
+
+    unixstamp getUnix();
+    civil_time getTime();
+    int8_t getTz();
     uint16_t getYear();
     uint8_t getMonth();
     uint8_t getDay();

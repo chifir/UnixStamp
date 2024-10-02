@@ -64,6 +64,16 @@ civil_time UnixStamp::convertUnixToTime(unixstamp unixToConvert, int8_t fromTz)
     return time;
 }
 
+civil_time UnixStamp::getOriginalTime()
+{
+    return convertUnixToTime(this->unix, this->tz);
+}
+
+civil_time UnixStamp::getTimeInTz(int8_t tz)
+{
+    return convertUnixToTime(this->unix, tz);
+}
+
 unixstamp UnixStamp::getUnix()
 {
     return this->unix;
