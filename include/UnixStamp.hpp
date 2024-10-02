@@ -20,7 +20,7 @@
 #define APPROXIMATE_DAYS_IN_YEAR 365
 #define FOUR_YEAR_CICLE_YEARS 4
 #define YEARS_IN_CENTURY 100
-#define DAYS_AFTER_FIRST_MARCH 153
+#define DAYS_BETWEEN_MARCH_AND_AUGUST 153
 
 class UnixStamp
 {
@@ -28,7 +28,7 @@ private:
     // Both timestamps are saved in GMT+0
     unixstamp unix;
     civil_time time;
-    uint8_t tz;
+    int8_t tz;
 
 public:
     unixstamp getUnix();

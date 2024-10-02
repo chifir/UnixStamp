@@ -1,9 +1,6 @@
 #include "UnixStamp.hpp"
 
-UnixStamp::UnixStamp(unixstamp inintialUnix)
-{
-    UnixStamp(inintialUnix, 0);
-}
+UnixStamp::UnixStamp(unixstamp inintialUnix) : UnixStamp(inintialUnix, 0) {}
 
 UnixStamp::UnixStamp(unixstamp inintialUnix, int8_t inintialTz)
 {
@@ -12,10 +9,8 @@ UnixStamp::UnixStamp(unixstamp inintialUnix, int8_t inintialTz)
     this->time = convertUnixToTime(inintialUnix, inintialTz);
 }
 
-UnixStamp::UnixStamp(civil_time initialTime)
-{
-    UnixStamp(initialTime, 0);
-}
+UnixStamp::UnixStamp(civil_time initialTime) : UnixStamp(initialTime, 0) {}
+
 
 UnixStamp::UnixStamp(civil_time initialTime, int8_t initialTz)
 {
@@ -29,9 +24,9 @@ unixstamp UnixStamp::convertTimeToUnix(civil_time timeToConvert, int8_t fromTz)
     uint16_t year = timeToConvert.year;
     uint8_t month = timeToConvert.mon;
     year -= month <= 2;
-    uint8_t era = ((year >= 0 ? year : (year - YEARS_IN_ERA - 1)) / YEARS_IN_ERA);
+    uint8_t era = ((year >= 0 ? year : (year - (YEARS_IN_ERA - 1))) / YEARS_IN_ERA);
     uint16_t yearOfEra = year % YEARS_IN_ERA;
-    uint16_t dayOfYear = ((DAYS_AFTER_FIRST_MARCH * (month > 2 ? month - 3 : month + 9) + 2) / 5) + timeToConvert.day - 1;
+    uint16_t dayOfYear = ((DAYS_BETWEEN_MARCH_AND_AUGUST * (month > 2 ? month - 3 : month + 9) + 2) / 5) + timeToConvert.day - 1;
     uint32_t dayOfEra = ((uint32_t)(yearOfEra * 365)) - ((uint32_t)(yearOfEra / 100)) + ((uint32_t)(yearOfEra / 4)) + dayOfYear;
     uint16_t days = (era * DAYS_IN_ERA) + dayOfEra - DAYS_BEFORE_UNIX;
     uint32_t unix = days * ONE_DAY_IN_SEC + (((uint32_t)(timeToConvert.hour - fromTz)) * ONE_HOUR_IN_SEC) + ((uint32_t)(timeToConvert.min * 60)) + timeToConvert.sec;
@@ -58,8 +53,8 @@ civil_time UnixStamp::convertUnixToTime(unixstamp unixToConvert, int8_t fromTz)
     yearOfEra = (dayOfEra - dayOfEra / FOUR_YEAR_CICLE_DAYS + dayOfEra / FIRST_100_YEARS_OF_ERA - dayOfEra / (DAYS_IN_ERA - 1)) / APPROXIMATE_DAYS_IN_YEAR;
     yearFromEra = yearOfEra + era * YEARS_IN_ERA;
     dayOfYear = dayOfEra - (yearOfEra * APPROXIMATE_DAYS_IN_YEAR + yearOfEra / FOUR_YEAR_CICLE_YEARS - yearOfEra / YEARS_IN_CENTURY);
-    monthFromDayOfYear = (dayOfYear * 5 + 2) / DAYS_AFTER_FIRST_MARCH;
-    time.day = (dayOfYear - (monthFromDayOfYear * DAYS_AFTER_FIRST_MARCH + 2) / 5) + 1;
+    monthFromDayOfYear = (dayOfYear * 5 + 2) / DAYS_BETWEEN_MARCH_AND_AUGUST;
+    time.day = (dayOfYear - (monthFromDayOfYear * DAYS_BETWEEN_MARCH_AND_AUGUST + 2) / 5) + 1;
     month = monthFromDayOfYear + (monthFromDayOfYear < 10 ? 3 : -9);
     yearFromEra += (month <= 2);
 
