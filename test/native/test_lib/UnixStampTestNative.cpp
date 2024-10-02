@@ -12,15 +12,9 @@ void setUp(void) {}
 
 void tearDown(void) {}
 
-civil_time fillTimeStruct(uint16_t year, uint8_t mon, uint8_t day, uint8_t hour, uint8_t min, uint8_t sec)
-{
-    civil_time time {sec, min, hour, day, mon, year};
-    return time;
-}
-
 void verify_date_conversion_from_civil_to_epoch(uint32_t expected_unix, uint16_t year, uint8_t mon, uint8_t day, uint8_t hour, uint8_t min, uint8_t sec, int8_t tz)
 {
-    civil_time time = fillTimeStruct(year, mon, day, hour, min, sec);
+    civil_time time{sec, min, hour, day, mon, year};
     unixstamp unix = UnixStamp::convertTimeToUnix(time, tz);
     TEST_ASSERT_EQUAL(expected_unix, unix);
 }
@@ -37,7 +31,7 @@ void verify_date(civil_time expected, civil_time actual)
 
 void verify_date_conversion_from_epoch_to_civil(uint16_t expected_year, uint8_t expected_mon, uint8_t expected_day, uint8_t expected_hour, uint8_t expected_min, uint8_t expected_sec, uint32_t unix, int8_t tz)
 {
-    civil_time expected_time = fillTimeStruct(expected_year, expected_mon, expected_day, expected_hour, expected_min, expected_sec);
+    civil_time expected_time{expected_sec, expected_min, expected_hour, expected_day, expected_mon, expected_year};
     civil_time actual_time = UnixStamp::convertUnixToTime(unix, tz);
     verify_date(expected_time, actual_time);
 }
@@ -94,7 +88,7 @@ void test_conversion_to_civil_calendar_era_start()
 
 void test_unix_stamp_object_from_unix_date()
 {
-    civil_time expected_date {45, 23, 21, 25, 4, 1986};
+    civil_time expected_date{45, 23, 21, 25, 4, 1986};
     UnixStamp unixStamp(EXPECETED_CHERNOBYL_TIMESTAMP);
     verify_date(expected_date, unixStamp.getTime());
 }
@@ -107,27 +101,27 @@ void test_unix_stamp_object_from_unix_in_gmt()
 
 void test_unix_stamp_object_from_civil_unix()
 {
-    civil_time time {45, 23, 21, 25, 4, 1986};
+    civil_time time{45, 23, 21, 25, 4, 1986};
     UnixStamp unixStamp(time);
     TEST_ASSERT_EQUAL(EXPECETED_CHERNOBYL_TIMESTAMP, unixStamp.getUnix());
 }
 
 void test_unix_stamp_object_from_civil_date_in_gmt()
 {
-    civil_time time {45, 23, 21, 25, 4, 1986};
+    civil_time time{45, 23, 21, 25, 4, 1986};
     UnixStamp unixStamp(time);
     verify_date(time, unixStamp.getTime());
 }
 
-void test_tz_equal_unix_constructor() 
+void test_tz_equal_unix_constructor()
 {
     UnixStamp unixStamp(EXPECETED_CHERNOBYL_TIMESTAMP, 4);
     TEST_ASSERT_EQUAL(4, unixStamp.getTz());
 }
 
-void test_tz_equal_time_constructor() 
+void test_tz_equal_time_constructor()
 {
-    civil_time time {45, 23, 21, 25, 4, 1986};
+    civil_time time{45, 23, 21, 25, 4, 1986};
     UnixStamp unixStamp(time, 4);
     TEST_ASSERT_EQUAL(4, unixStamp.getTz());
 }
@@ -142,7 +136,7 @@ int main(void)
     RUN_TEST(test_unix_stamp_object_from_civil_date_in_gmt);
     RUN_TEST(test_tz_equal_time_constructor);
     RUN_TEST(test_tz_equal_unix_constructor);
-    
+
     RUN_TEST(test_conversion_to_unix_unix_left_border);
     RUN_TEST(test_conversion_to_unix_unix_right_border);
     RUN_TEST(test_conversion_to_unix_chernobyl);
