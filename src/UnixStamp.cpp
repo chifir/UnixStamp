@@ -1,23 +1,10 @@
 #include "UnixStamp.hpp"
 
-UnixStamp::UnixStamp(unixstamp inintialUnix) : UnixStamp(inintialUnix, 0) {}
+UnixStamp::UnixStamp(unixstamp unix) : unix(unix) {}
 
-UnixStamp::UnixStamp(unixstamp inintialUnix, int8_t inintialTz)
-{
-    this->tz = inintialTz;
-    this->unix = inintialUnix - (inintialTz * ONE_HOUR_IN_SEC);
-    this->time = convertUnixToTime(inintialUnix, inintialTz);
-}
+UnixStamp::UnixStamp(civil_time time) : UnixStamp(time, 0) {}
 
-UnixStamp::UnixStamp(civil_time initialTime) : UnixStamp(initialTime, 0) {}
-
-
-UnixStamp::UnixStamp(civil_time initialTime, int8_t initialTz)
-{
-    this->tz = initialTz;
-    this->unix = convertTimeToUnix(initialTime, initialTz);
-    this->time = initialTz != 0 ? convertUnixToTime(this->unix, 0) : initialTime;
-}
+UnixStamp::UnixStamp(civil_time time, int8_t tz) : unix(convertTimeToUnix(time, tz)) {}
 
 unixstamp UnixStamp::convertTimeToUnix(civil_time timeToConvert, int8_t fromTz)
 {
@@ -64,11 +51,6 @@ civil_time UnixStamp::convertUnixToTime(unixstamp unixToConvert, int8_t fromTz)
     return time;
 }
 
-civil_time UnixStamp::getOriginalTime()
-{
-    return convertUnixToTime(this->unix, this->tz);
-}
-
 civil_time UnixStamp::getTimeInTz(int8_t tz)
 {
     return convertUnixToTime(this->unix, tz);
@@ -77,44 +59,4 @@ civil_time UnixStamp::getTimeInTz(int8_t tz)
 unixstamp UnixStamp::getUnix()
 {
     return this->unix;
-}
-
-int8_t UnixStamp::getTz()
-{
-    return this->tz;
-}
-
-civil_time UnixStamp::getTime()
-{
-    return this->time;
-}
-
-uint16_t UnixStamp::getYear()
-{
-    return this->time.year;
-}
-
-uint8_t UnixStamp::getMonth()
-{
-    return this->time.mon;
-}
-
-uint8_t UnixStamp::getDay()
-{
-    return this->time.day;
-}
-
-uint8_t UnixStamp::getHour()
-{
-    return this->time.hour;
-}
-
-uint8_t UnixStamp::getMinute()
-{
-    return this->time.min;
-}
-
-uint8_t UnixStamp::getSecond()
-{
-    return this->time.sec;
 }
