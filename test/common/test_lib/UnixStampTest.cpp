@@ -90,7 +90,7 @@ void test_unix_stamp_object_from_unix_date()
 {
     civil_time expected_date{45, 23, 21, 25, 4, 1986};
     UnixStamp unixStamp(EXPECETED_CHERNOBYL_TIMESTAMP);
-    verify_date(expected_date, unixStamp.getTime());
+    verify_date(expected_date, unixStamp.getTimeInTz(0));
 }
 
 void test_unix_stamp_object_from_unix_in_gmt()
@@ -110,20 +110,7 @@ void test_unix_stamp_object_from_civil_date_in_gmt()
 {
     civil_time time{45, 23, 21, 25, 4, 1986};
     UnixStamp unixStamp(time);
-    verify_date(time, unixStamp.getTime());
-}
-
-void test_tz_equal_unix_constructor()
-{
-    UnixStamp unixStamp(EXPECETED_CHERNOBYL_TIMESTAMP, 4);
-    TEST_ASSERT_EQUAL(4, unixStamp.getTz());
-}
-
-void test_tz_equal_time_constructor()
-{
-    civil_time time{45, 23, 21, 25, 4, 1986};
-    UnixStamp unixStamp(time, 4);
-    TEST_ASSERT_EQUAL(4, unixStamp.getTz());
+    verify_date(time, unixStamp.getTimeInTz(0));
 }
 
 int main(void)
@@ -134,8 +121,6 @@ int main(void)
     RUN_TEST(test_unix_stamp_object_from_unix_in_gmt);
     RUN_TEST(test_unix_stamp_object_from_civil_unix);
     RUN_TEST(test_unix_stamp_object_from_civil_date_in_gmt);
-    RUN_TEST(test_tz_equal_time_constructor);
-    RUN_TEST(test_tz_equal_unix_constructor);
 
     RUN_TEST(test_conversion_to_unix_unix_left_border);
     RUN_TEST(test_conversion_to_unix_unix_right_border);
@@ -148,5 +133,6 @@ int main(void)
     RUN_TEST(test_conversion_to_civil_chernobyl);
     RUN_TEST(test_conversion_to_civil_calendar_era_end);
     RUN_TEST(test_conversion_to_civil_calendar_era_start);
+
     return UNITY_END();
 }

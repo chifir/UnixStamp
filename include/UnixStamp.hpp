@@ -25,29 +25,17 @@
 class UnixStamp
 {
 private:
-    // Both timestamps are saved in GMT+0
+    // The timestamp is in GMT+0
     unixstamp unix;
-    civil_time time;
-    int8_t tz;
 
 public:
     UnixStamp(unixstamp initialUnix);
-    UnixStamp(unixstamp initialUnix, int8_t initialTz);
     UnixStamp(civil_time intialTime);
     UnixStamp(civil_time intialTime, int8_t initialTz);
 
-    civil_time getOriginalTime();
     civil_time getTimeInTz(int8_t tz);
 
     unixstamp getUnix();
-    civil_time getTime();
-    int8_t getTz();
-    uint16_t getYear();
-    uint8_t getMonth();
-    uint8_t getDay();
-    uint8_t getHour();
-    uint8_t getMinute();
-    uint8_t getSecond();
 
     // Convert civil time in timezone 'tz' to the unix timestamp in GMT+0
     static unixstamp convertTimeToUnix(civil_time time, int8_t tz);
